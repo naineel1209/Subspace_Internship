@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subspace Internship Assignment </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    nav {
+      background-color: #444;
+      padding-block: 10px;
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    nav a {
+      color: #00ff5e;
+      text-decoration: none;
+      margin: 10px;
+    }
+
+    .credits {
+      background-color: #333;
+      color: #fff;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Welcome to the SubSpace Internship Assignment</h1>
+  </header>
+  <nav>
+    <h2><a href="/api/blog-stats">To → /api/blog-stats</a></h2>
+    <h2>
+      <input type="text" id="search" placeholder="Search">
+      <a href="/api/blog-search" id="anchor">To → /api/blog-search?query=<span id="query"></span></a>
+    </h2>
+    <div class="credits">
+      <h3>
+        <a target="_blank" href="https://naineel-portfolio-23.netlify.app/">
+          Created By: Naineel Soyantar 🌃(●'◡'●)
+        </a>
+      </h3>
+    </div>
+  </nav>
+
+  <script>
+    const search = document.getElementById('search');
+    const query = document.getElementById('query');
+
+    search.addEventListener('input', handleQuery);
+
+    function handleQuery() {
+      query.innerText = search.value;
+      const anchor = document.getElementById('anchor');
+      anchor.href = `/api/blog-search?query=${search.value}`;
+    }
+  </script>
+</body>
+
+</html>
