@@ -1,4 +1,4 @@
-#SubSpace Internship
+# Subspace_Internship
 
 **SubSpace Internship Assignment -- 30/09/2023**
 
