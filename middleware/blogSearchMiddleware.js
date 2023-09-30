@@ -33,32 +33,64 @@ const blogSearchMiddleware = async (req, res, next) => {
     });
   }
 
-  fetch('https://intent-kit-16.hasura.app/api/rest/blogs', options)
-    .then(response => response.json())
-    .then(response => {
-      if (typeof response.blogs === "object") {
+  const memoizedFetch = _.memoize(async function () {
+    fetch('https://intent-kit-16.hasura.app/api/rest/blogs', options)
+      .then(response => response.json())
+      .then(response => {
+        if (typeof response.blogs === "object") {
 
-        blogs = response.blogs;
-        // console.log(blogs);
+          blogs = response.blogs;
+          // console.log(blogs);
 
-        //finding the blogs with matching query using filter
-        matchingBlogs = _.filter(blogs, (blog) => {
-          return _.includes(blog.title.toLowerCase(), query.toLowerCase());
+          //finding the blogs with matching query using filter
+          matchingBlogs = _.filter(blogs, (blog) => {
+            return _.includes(blog.title.toLowerCase(), query.toLowerCase());
+          });
+
+          req.matchingBlogs = matchingBlogs;
+
+          next();
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(500).json({
+          message: err.message || 'Something went wrong'
         });
-
-        req.matchingBlogs = matchingBlogs;
-
-        next();
-      } else {
-        throw new Error('Something went wrong');
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(500).json({
-        message: err.message || 'Something went wrong'
       });
-    });
+  })
+
+  memoizedFetch();
+
+
+  // fetch('https://intent-kit-16.hasura.app/api/rest/blogs', options)
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     if (typeof response.blogs === "object") {
+
+  //       blogs = response.blogs;
+  //       // console.log(blogs);
+
+  //       //finding the blogs with matching query using filter
+  //       matchingBlogs = _.filter(blogs, (blog) => {
+  //         return _.includes(blog.title.toLowerCase(), query.toLowerCase());
+  //       });
+
+  //       req.matchingBlogs = matchingBlogs;
+
+  //       next();
+  //     } else {
+  //       throw new Error('Something went wrong');
+  //     }
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //     return res.status(500).json({
+  //       message: err.message || 'Something went wrong'
+  //     });
+  //   });
 }
 
 export default blogSearchMiddleware;
